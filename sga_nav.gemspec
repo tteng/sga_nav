@@ -25,6 +25,7 @@ Gem::Specification.new do |s|
      "VERSION",
      "lib/nav/navigation.rb",
      "lib/sga_nav.rb",
+     "sga_nav.gemspec",
      "test/helper.rb",
      "test/test_sga_nav.rb"
   ]

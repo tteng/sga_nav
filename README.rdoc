@@ -1,6 +1,94 @@
 = sga_nav
 
-Description goes here.
+== Usage
+
+ to build a navigation li :
+
+  <div class="nav">
+    <ul>
+      <% main_nav :user, :class => "first" do %> <%= link_to 'Users', users_path %> <% end %>
+      <% main_nav :scene do %> <%= link_to 'Scenes', scenes_path %> <% end %>
+    </ul>
+  </div>
+
+ to build a sub nav:
+
+   <div class="secondary-navigation">
+     <ul>
+       <% sec_nav :new, :class => "first" do %><%= link_to "tasks", user_tasks_path(current_user) %><% end %>
+       <% sec_nav :strategy do %><%= link_to "messages", user_messages_path(current_user) %><% end %>
+     </ul>
+     <div class="clear"></div>
+   </div>
+
+ when user view pages correspoding to actions in users controller, we'd like the tab "User" highlight, to accomplish this:
+
+ class UsersController < ApplicationController
+
+   main_nav_highlight :users
+
+   # bla bla bla ...
+
+ end
+
+ also if you need to highlight the sub nav, call "sec_nav_highlight :something" in your controller
+
+== Code
+
+module Navigation
+
+  module ControllerExtensions
+
+    module ClassMethods
+
+      def sec_nav_highlight(name)
+        class_eval do
+          before_filter { |c| c.instance_variable_set(:@sec_nav, name) }
+        end
+      end
+
+      def main_nav_highlight(name)
+        class_eval do
+          before_filter { |c| c.instance_variable_set(:@main_nav, name) }
+        end
+      end
+
+    end
+
+  end
+
+  module RailsHelpers
+
+    def sec_nav(name, options = {}, &block)
+      if @sec_nav == name
+        if options[:class]
+          options[:class] += " active"
+        else
+          options[:class] = "active"
+        end
+      end
+      content = capture(&block)
+      concat content_tag(:li, content, options)
+    end
+
+    def main_nav(name, options = {}, &block)
+      if @main_nav == name
+        if options[:class]
+          options[:class] += " active"
+        else
+          options[:class] = "active"
+        end
+      end
+      content = capture(&block)
+      concat content_tag(:li, content, options)
+    end
+
+  end
+
+end
+
+ActionController::Base.send :extend, Navigation::ControllerExtensions::ClassMethods
+ActionController::Base.send :helper, Navigation::RailsHelpers
 
 == Note on Patches/Pull Requests
  

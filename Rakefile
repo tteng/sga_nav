@@ -5,12 +5,11 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "sga_nav"
-    gem.summary = %Q{TODO: one-line summary of your gem}
-    gem.description = %Q{TODO: longer description of your gem}
+    gem.summary = %Q{simple navigation tabs for sga innternal project}
+    gem.description = %Q{a simple implemention for navigation}
     gem.email = "tim.rubist@gmail.com"
     gem.homepage = "http://github.com/tteng/sga_nav"
     gem.authors = ["tim.teng"]
-    gem.add_development_dependency "thoughtbot-shoulda", ">= 0"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new
